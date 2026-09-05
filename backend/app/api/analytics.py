@@ -66,3 +66,12 @@ def dashboard_summary(
     db: Session = Depends(get_db),
 ):
     return _handle(analytics_service.get_dashboard_summary, db, merchant_id)
+
+@router.get("/merchants/demo")
+def get_demo_merchant(db: Session = Depends(get_db)):
+    # Minimal compatibility fix to support frontend P0 dashboard without hardcoding UUID
+    from sqlalchemy import text
+    result = db.execute(text("SELECT id FROM merchants LIMIT 1")).fetchone()
+    if not result:
+        raise HTTPException(status_code=404, detail="No demo merchant found.")
+    return {"id": str(result[0])}

@@ -25,9 +25,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from app.api import analytics, health, growth, approvals, execution, payments, shopping
+
 app.include_router(health.router)
 app.include_router(analytics.router)
-
+app.include_router(growth.router)
+app.include_router(approvals.router)
+app.include_router(execution.router)
+app.include_router(payments.router)
+app.include_router(shopping.router)
 
 @app.get("/", tags=["root"])
 def root():
